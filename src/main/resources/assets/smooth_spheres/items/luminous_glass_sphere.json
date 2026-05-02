@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "smooth_spheres:item/luminous_glass_sphere"
+  }
+}

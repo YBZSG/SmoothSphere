@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "smooth_spheres",
+  "version": "${version}",
+  "name": "Smooth Spheres",
+  "description": "Adds polished decorative sphere blocks with shader-friendly PBR texture placeholders.",
+  "authors": [
+    "LZH"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/smooth_spheres/textures/block/polished_metal_sphere.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.lzh.smoothspheres.SmoothSpheresMod"
+    ],
+    "client": [
+      "com.lzh.smoothspheres.SmoothSpheresClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "1.21.4",
+    "java": ">=21",
+    "fabric-api": ">=0.119.4+1.21.4"
+  }
+}

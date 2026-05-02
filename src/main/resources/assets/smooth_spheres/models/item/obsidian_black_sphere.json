@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "smooth_spheres:block/obsidian_black_sphere"
+  }
+}

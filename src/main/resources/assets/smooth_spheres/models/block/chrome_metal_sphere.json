@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "smooth_spheres:block/chrome_metal_sphere"
+  },
+  "elements": []
+}

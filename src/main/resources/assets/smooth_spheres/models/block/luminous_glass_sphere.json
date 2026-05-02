@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "smooth_spheres:block/luminous_glass_sphere"
+  },
+  "elements": []
+}

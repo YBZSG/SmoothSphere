@@ -1,0 +1,19 @@
+.gradle/
+build/
+run/
+out/
+.idea/
+*.iml
+*.log
+*.tmp
+*.bak
+*.disabled
+
+# Minecraft/runtime output
+crash-reports/
+logs/
+saves/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
