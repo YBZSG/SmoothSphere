@@ -2,8 +2,11 @@ package com.lzh.smoothspheres;
 
 import com.lzh.smoothspheres.client.model.SmoothSphereBakedModel;
 import com.lzh.smoothspheres.registry.ModBlocks;
+import com.lzh.smoothspheres.registry.ModEntities;
+import com.lzh.smoothspheres.client.render.PhysicsSphereEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
 
 public class SmoothSpheresClient implements ClientModInitializer {
@@ -15,5 +18,6 @@ public class SmoothSpheresClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.FROSTED_GLASS_SPHERE, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.LUMINOUS_GLASS_SPHERE, RenderLayer.getTranslucent());
         SmoothSphereBakedModel.registerModelPlugin();
+        EntityRendererRegistry.register(ModEntities.PHYSICS_SPHERE, PhysicsSphereEntityRenderer::new);
     }
 }

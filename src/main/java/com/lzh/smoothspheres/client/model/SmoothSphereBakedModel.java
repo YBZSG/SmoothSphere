@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SmoothSphereBakedModel implements BakedModel {
     private static final float CENTER = 0.5F;
-    private static final float RADIUS = 0.4375F;
+    private static final float RADIUS = 0.5F;
     private static final Map<SmoothSpheresConfig.Quality, SphereQuad[]> GEOMETRY_CACHE = new ConcurrentHashMap<>();
     private static final Map<Identifier, SphereMaterial> MATERIALS = Map.of(
             SmoothSpheresMod.id("polished_metal_sphere"), SphereMaterial.POLISHED_METAL,
@@ -193,13 +193,13 @@ public class SmoothSphereBakedModel implements BakedModel {
 
     private enum SphereMaterial {
         POLISHED_METAL(62, 66, 70, 152, 160, 166, 232, 238, 242, 255, 0, 0.42F, 96.0F, 0.12F, 0.72F, 0.01F),
-        GLOWING_CRYSTAL(42, 56, 138, 112, 170, 245, 230, 250, 255, 185, 14, 0.24F, 54.0F, 0.36F, 0.58F, 0.04F),
+        GLOWING_CRYSTAL(42, 56, 138, 112, 170, 245, 230, 250, 255, 115, 14, 0.24F, 54.0F, 0.36F, 0.58F, 0.04F),
         OBSIDIAN_BLACK(2, 2, 7, 14, 12, 24, 82, 54, 128, 255, 0, 0.18F, 76.0F, 0.10F, 0.62F, 0.015F),
         WHITE_CERAMIC(166, 164, 156, 232, 230, 220, 246, 244, 235, 255, 0, 0.035F, 22.0F, 0.025F, 0.78F, 0.018F),
-        BLUE_GLASS(22, 78, 156, 62, 166, 245, 212, 244, 255, 132, 0, 0.48F, 118.0F, 0.44F, 0.48F, 0.0F),
-        CLEAR_GLASS(128, 170, 184, 198, 240, 255, 255, 255, 255, 92, 0, 0.50F, 124.0F, 0.36F, 0.42F, 0.0F),
-        FROSTED_GLASS(135, 178, 184, 186, 228, 226, 232, 255, 248, 164, 0, 0.075F, 28.0F, 0.20F, 0.55F, 0.09F),
-        LUMINOUS_GLASS(72, 180, 150, 150, 255, 220, 255, 255, 245, 148, 15, 0.20F, 42.0F, 0.34F, 0.48F, 0.025F),
+        BLUE_GLASS(22, 78, 156, 62, 166, 245, 212, 244, 255, 80, 0, 0.48F, 118.0F, 0.44F, 0.48F, 0.0F),
+        CLEAR_GLASS(128, 170, 184, 198, 240, 255, 255, 255, 255, 45, 0, 0.50F, 124.0F, 0.36F, 0.42F, 0.0F),
+        FROSTED_GLASS(135, 178, 184, 186, 228, 226, 232, 255, 248, 110, 0, 0.075F, 28.0F, 0.20F, 0.55F, 0.09F),
+        LUMINOUS_GLASS(72, 180, 150, 150, 255, 220, 255, 255, 245, 90, 15, 0.20F, 42.0F, 0.34F, 0.48F, 0.025F),
         CHROME_METAL(28, 32, 36, 156, 168, 176, 255, 255, 255, 255, 0, 0.80F, 142.0F, 0.18F, 0.62F, 0.0F);
 
         private final int shadowRed;

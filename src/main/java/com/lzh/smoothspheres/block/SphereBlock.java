@@ -1,11 +1,11 @@
 package com.lzh.smoothspheres.block;
 
 import com.mojang.serialization.MapCodec;
+import com.lzh.smoothspheres.entity.PhysicsSphereEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.text.Text;
@@ -63,11 +63,11 @@ public class SphereBlock extends Block {
             return ActionResult.SUCCESS;
         }
 
-        FallingBlockEntity entity = FallingBlockEntity.spawnFromBlock(world, pos, state);
-        entity.dropItem = false;
+        PhysicsSphereEntity entity = new PhysicsSphereEntity(world, pos, state);
         Vec3d push = player.getRotationVec(1.0F).multiply(0.42D);
         entity.setVelocity(push.x, Math.max(0.22D, push.y + 0.18D), push.z);
-        entity.velocityModified = true;
+        world.removeBlock(pos, false);
+        world.spawnEntity(entity);
         player.sendMessage(Text.literal("Sphere physics enabled"), true);
         return ActionResult.SUCCESS_SERVER;
     }
