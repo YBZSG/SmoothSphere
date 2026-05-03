@@ -80,11 +80,15 @@ public class PhysicsSphereEntity extends Entity {
             velocity = velocity.add(0.0D, -GRAVITY, 0.0D);
         }
 
+        Vec3d beforeMove = getPos();
         move(MovementType.SELF, velocity);
+        Vec3d movement = getPos().subtract(beforeMove);
         pushTouchingEntities();
 
         if (horizontalCollision) {
-            velocity = new Vec3d(-velocity.x * BOUNCE, velocity.y, -velocity.z * BOUNCE);
+            double x = bouncedHorizontalComponent(velocity.x, movement.x);
+            double z = bouncedHorizontalComponent(velocity.z, movement.z);
+            velocity = new Vec3d(x, velocity.y, z);
         }
 
         if (verticalCollision && velocity.y < 0.0D) {
@@ -106,6 +110,13 @@ public class PhysicsSphereEntity extends Entity {
         if (!getWorld().isClient() && (age > 20 * 60 * 5 || getY() < getWorld().getBottomY() - 16)) {
             discard();
         }
+    }
+
+    private static double bouncedHorizontalComponent(double attempted, double moved) {
+        if (Math.abs(attempted) > 1.0E-4D && Math.abs(moved) < Math.abs(attempted) * 0.45D) {
+            return -attempted * BOUNCE;
+        }
+        return attempted;
     }
 
     private void pushTouchingEntities() {
