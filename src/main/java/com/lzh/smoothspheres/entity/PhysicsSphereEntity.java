@@ -21,6 +21,7 @@ import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -74,6 +75,7 @@ public class PhysicsSphereEntity extends Entity {
         }
 
         move(MovementType.SELF, velocity);
+        pushTouchingEntities();
 
         if (horizontalCollision) {
             velocity = new Vec3d(-velocity.x * BOUNCE, velocity.y, -velocity.z * BOUNCE);
@@ -98,6 +100,44 @@ public class PhysicsSphereEntity extends Entity {
         if (!getWorld().isClient() && (age > 20 * 60 * 5 || getY() < getWorld().getBottomY() - 16)) {
             discard();
         }
+    }
+
+    private void pushTouchingEntities() {
+        Box box = getBoundingBox().expand(0.08D);
+        for (Entity other : getWorld().getOtherEntities(this, box, Entity::isPushable)) {
+            pushAwayFrom(other);
+            Vec3d direction = getPos().subtract(other.getPos());
+            if (direction.horizontalLengthSquared() > 1.0E-5D) {
+                Vec3d impulse = direction.normalize().multiply(0.075D);
+                addVelocity(impulse.x, 0.02D, impulse.z);
+                other.addVelocity(-impulse.x * 0.35D, 0.0D, -impulse.z * 0.35D);
+            }
+        }
+    }
+
+    @Override
+    public boolean canHit() {
+        return true;
+    }
+
+    @Override
+    public boolean isAttackable() {
+        return true;
+    }
+
+    @Override
+    public boolean isCollidable() {
+        return true;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return true;
+    }
+
+    @Override
+    public boolean collidesWith(Entity other) {
+        return other.isPushable();
     }
 
     @Override
