@@ -64,8 +64,8 @@ public class SphereBlock extends Block {
         }
 
         PhysicsSphereEntity entity = new PhysicsSphereEntity(world, pos, state);
-        Vec3d push = player.getRotationVec(1.0F).multiply(0.42D);
-        entity.setVelocity(push.x, Math.max(0.22D, push.y + 0.18D), push.z);
+        Vec3d push = player.getRotationVec(1.0F).normalize().multiply(1.05D);
+        entity.setVelocity(push.x, Math.max(0.36D, push.y + 0.28D), push.z);
         world.removeBlock(pos, false);
         world.spawnEntity(entity);
         player.sendMessage(Text.literal("Sphere physics enabled"), true);
