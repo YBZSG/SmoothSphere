@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class SmoothSphereBakedModel implements BakedModel {
-    private static final int LATITUDE_SEGMENTS = 32;
-    private static final int LONGITUDE_SEGMENTS = 64;
+    private static final int LATITUDE_SEGMENTS = 64;
+    private static final int LONGITUDE_SEGMENTS = 128;
     private static final float CENTER = 0.5F;
     private static final float RADIUS = 0.4375F;
     private static final SphereQuad[] GEOMETRY = buildGeometry();
