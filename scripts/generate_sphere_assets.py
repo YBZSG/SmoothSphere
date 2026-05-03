@@ -117,6 +117,18 @@ SPHERES = {
     },
 }
 
+ZH_NAMES = {
+    "polished_metal_sphere": "抛光金属球",
+    "glowing_crystal_sphere": "发光水晶球",
+    "obsidian_black_sphere": "黑曜石黑球",
+    "white_ceramic_sphere": "白色陶瓷球",
+    "blue_glass_sphere": "蓝色玻璃球",
+    "clear_glass_sphere": "透明玻璃球",
+    "frosted_glass_sphere": "磨砂玻璃球",
+    "luminous_glass_sphere": "发光玻璃球",
+    "chrome_metal_sphere": "铬金属球",
+}
+
 
 def write_json(path: Path, data: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -188,8 +200,24 @@ def main() -> None:
         "config.smooth_spheres.quality.balanced": "Balanced (128x64)",
         "config.smooth_spheres.quality.high": "High (192x96)",
         "config.smooth_spheres.quality.ultra": "Ultra (256x128)",
+        "config.smooth_spheres.physics": "Physics: %s",
+        "config.smooth_spheres.enabled": "On",
+        "config.smooth_spheres.disabled": "Off",
         "config.smooth_spheres.apply": "Apply",
         "config.smooth_spheres.reload_hint": "Changing quality reloads resources.",
+    }
+    zh_lang = {
+        "itemGroup.smooth_spheres.smooth_spheres": "光滑球体",
+        "config.smooth_spheres.title": "光滑球体",
+        "config.smooth_spheres.quality": "球体质量：%s",
+        "config.smooth_spheres.quality.balanced": "均衡（128x64）",
+        "config.smooth_spheres.quality.high": "高（192x96）",
+        "config.smooth_spheres.quality.ultra": "极高（256x128）",
+        "config.smooth_spheres.physics": "物理效果：%s",
+        "config.smooth_spheres.enabled": "开启",
+        "config.smooth_spheres.disabled": "关闭",
+        "config.smooth_spheres.apply": "应用",
+        "config.smooth_spheres.reload_hint": "修改球体质量会重新加载资源。",
     }
 
     for block_id, info in SPHERES.items():
@@ -212,6 +240,7 @@ def main() -> None:
             }
         })
         lang[f"block.smooth_spheres.{block_id}"] = info["name"]
+        zh_lang[f"block.smooth_spheres.{block_id}"] = ZH_NAMES[block_id]
 
         (TEXTURES / f"{block_id}.png").write_bytes(material_texture(info, "base"))
         (TEXTURES / f"{block_id}_n.png").write_bytes(material_texture(info, "normal"))
@@ -220,6 +249,7 @@ def main() -> None:
 
     (TEXTURES / "sphere_surface.png").write_bytes(png_bytes(1, 1, [(255, 255, 255, 255)]))
     write_json(LANG / "en_us.json", lang)
+    write_json(LANG / "zh_cn.json", zh_lang)
 
 
 if __name__ == "__main__":

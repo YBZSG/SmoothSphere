@@ -16,6 +16,7 @@ public final class SmoothSpheresConfig {
     private static SmoothSpheresConfig INSTANCE;
 
     private Quality quality = Quality.HIGH;
+    private boolean physicsEnabled = true;
 
     private SmoothSpheresConfig() {
     }
@@ -33,6 +34,14 @@ public final class SmoothSpheresConfig {
 
     public void setQuality(Quality quality) {
         this.quality = quality;
+    }
+
+    public boolean physicsEnabled() {
+        return physicsEnabled;
+    }
+
+    public void setPhysicsEnabled(boolean physicsEnabled) {
+        this.physicsEnabled = physicsEnabled;
     }
 
     public void save() {

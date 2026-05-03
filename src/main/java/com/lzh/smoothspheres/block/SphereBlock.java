@@ -1,6 +1,7 @@
 package com.lzh.smoothspheres.block;
 
 import com.mojang.serialization.MapCodec;
+import com.lzh.smoothspheres.client.config.SmoothSpheresConfig;
 import com.lzh.smoothspheres.entity.PhysicsSphereEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -59,6 +60,10 @@ public class SphereBlock extends Block {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (!SmoothSpheresConfig.get().physicsEnabled()) {
+            return ActionResult.PASS;
+        }
+
         if (world.isClient()) {
             return ActionResult.SUCCESS;
         }
