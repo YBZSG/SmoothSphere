@@ -5,11 +5,18 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
 public class SphereBlock extends Block {
     public static final MapCodec<SphereBlock> CODEC = createCodec(SphereBlock::new);
@@ -48,5 +55,20 @@ public class SphereBlock extends Block {
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SPHERE_SHAPE;
+    }
+
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (world.isClient()) {
+            return ActionResult.SUCCESS;
+        }
+
+        FallingBlockEntity entity = FallingBlockEntity.spawnFromBlock(world, pos, state);
+        entity.dropItem = false;
+        Vec3d push = player.getRotationVec(1.0F).multiply(0.42D);
+        entity.setVelocity(push.x, Math.max(0.22D, push.y + 0.18D), push.z);
+        entity.velocityModified = true;
+        player.sendMessage(Text.literal("Sphere physics enabled"), true);
+        return ActionResult.SUCCESS_SERVER;
     }
 }

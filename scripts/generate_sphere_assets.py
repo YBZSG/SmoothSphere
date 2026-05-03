@@ -154,48 +154,16 @@ def dot(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
     return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
 
 
-def shaded_texture(info: dict[str, tuple[int, int, int, int]], kind: str, size: int = 512) -> bytes:
-    pixels = []
-    light_dir = normalize((-0.45, 0.72, -0.53))
-    view_dir = normalize((0.0, 0.0, -1.0))
-    half_dir = normalize((light_dir[0] + view_dir[0], light_dir[1] + view_dir[1], light_dir[2] + view_dir[2]))
-    for y in range(size):
-        v = y / (size - 1)
-        theta = math.pi * v
-        sin_theta = math.sin(theta)
-        cos_theta = math.cos(theta)
-        for x in range(size):
-            u = x / (size - 1)
-            phi = math.pi * 2.0 * u
-            noise = math.sin(x * 12.9898 + y * 78.233) * math.sin(x * 4.173 + y * 19.19)
-            normal_noise = info.get("normal_noise", 0.0)
-            normal = normalize((
-                math.cos(phi) * sin_theta + noise * normal_noise,
-                cos_theta + math.sin(x * 0.31 + y * 0.17) * normal_noise * 0.65,
-                math.sin(phi) * sin_theta + math.cos(x * 0.21 - y * 0.37) * normal_noise,
-            ))
-            diffuse = max(0.0, dot(normal, light_dir))
-            fresnel = (1.0 - max(0.0, -normal[2])) ** 2.2
-            specular = (max(0.0, dot(normal, half_dir)) ** 80) * info.get("specular", 0.35)
-
-            if kind == "normal":
-                pixels.append((
-                    round((normal[0] * 0.5 + 0.5) * 255),
-                    round((-normal[1] * 0.5 + 0.5) * 255),
-                    round((normal[2] * 0.5 + 0.5) * 255),
-                    255,
-                ))
-            elif kind == "spec":
-                pixels.append(mix(info["spec"], info["highlight"], max(specular, fresnel * info.get("specular", 0.35) * 0.24)))
-            elif kind == "emissive":
-                glow = 0.35 + 0.45 * diffuse + 0.2 * fresnel
-                pixels.append(mix((0, 0, 0, 255), info["emissive"], glow))
-            else:
-                light = 0.42 + diffuse * 0.48
-                color = mix(info["shadow"], info["base"], light)
-                color = mix(color, info["highlight"], min(0.78, specular * 0.65 + fresnel * 0.2))
-                pixels.append(color)
-    return png_bytes(size, size, pixels)
+def material_texture(info: dict[str, tuple[int, int, int, int]], kind: str, size: int = 16) -> bytes:
+    if kind == "normal":
+        color = info["normal"]
+    elif kind == "spec":
+        color = info["spec"]
+    elif kind == "emissive":
+        color = info["emissive"]
+    else:
+        color = info["base"]
+    return png_bytes(size, size, [color] * (size * size))
 
 
 def sphere_model(texture_name: str) -> dict:
@@ -245,10 +213,10 @@ def main() -> None:
         })
         lang[f"block.smooth_spheres.{block_id}"] = info["name"]
 
-        (TEXTURES / f"{block_id}.png").write_bytes(shaded_texture(info, "base"))
-        (TEXTURES / f"{block_id}_n.png").write_bytes(shaded_texture(info, "normal"))
-        (TEXTURES / f"{block_id}_s.png").write_bytes(shaded_texture(info, "spec"))
-        (TEXTURES / f"{block_id}_e.png").write_bytes(shaded_texture(info, "emissive"))
+        (TEXTURES / f"{block_id}.png").write_bytes(material_texture(info, "base"))
+        (TEXTURES / f"{block_id}_n.png").write_bytes(material_texture(info, "normal"))
+        (TEXTURES / f"{block_id}_s.png").write_bytes(material_texture(info, "spec"))
+        (TEXTURES / f"{block_id}_e.png").write_bytes(material_texture(info, "emissive"))
 
     (TEXTURES / "sphere_surface.png").write_bytes(png_bytes(1, 1, [(255, 255, 255, 255)]))
     write_json(LANG / "en_us.json", lang)
