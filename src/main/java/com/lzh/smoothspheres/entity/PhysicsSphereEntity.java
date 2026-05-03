@@ -159,8 +159,26 @@ public class PhysicsSphereEntity extends Entity {
 
     @Override
     public boolean damage(ServerWorld world, DamageSource source, float amount) {
-        Block.dropStack(world, getBlockPos(), new ItemStack(getBlockState().getBlock()));
-        discard();
+        Entity directSource = source.getSource();
+        if (directSource instanceof PlayerEntity) {
+            Block.dropStack(world, getBlockPos(), new ItemStack(getBlockState().getBlock()));
+            discard();
+            return true;
+        }
+
+        if (directSource != null) {
+            Vec3d direction = directSource.getVelocity();
+            if (direction.horizontalLengthSquared() < 1.0E-5D) {
+                direction = getPos().subtract(directSource.getPos());
+            }
+            launch(direction, HIT_PUSH + amount * 0.06D, 0.18D + Math.min(amount, 6.0F) * 0.02D);
+            directSource.discard();
+        } else if (source.getPosition() != null) {
+            launch(getPos().subtract(source.getPosition()), HIT_PUSH, 0.18D);
+        } else {
+            launch(new Vec3d(random.nextDouble() - 0.5D, 0.0D, random.nextDouble() - 0.5D), HIT_PUSH, 0.18D);
+        }
+
         return true;
     }
 
