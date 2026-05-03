@@ -7,5 +7,12 @@
   "block.smooth_spheres.blue_glass_sphere": "Blue Glass Sphere",
   "block.smooth_spheres.clear_glass_sphere": "Clear Glass Sphere",
   "block.smooth_spheres.luminous_glass_sphere": "Luminous Glass Sphere",
-  "block.smooth_spheres.chrome_metal_sphere": "Chrome Metal Sphere"
+  "block.smooth_spheres.chrome_metal_sphere": "Chrome Metal Sphere",
+  "config.smooth_spheres.title": "Smooth Spheres",
+  "config.smooth_spheres.quality": "Sphere quality: %s",
+  "config.smooth_spheres.quality.balanced": "Balanced (128x64)",
+  "config.smooth_spheres.quality.high": "High (192x96)",
+  "config.smooth_spheres.quality.ultra": "Ultra (256x128)",
+  "config.smooth_spheres.apply": "Apply",
+  "config.smooth_spheres.reload_hint": "Changing quality reloads resources."
 }

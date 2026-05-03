@@ -180,7 +180,16 @@ def main() -> None:
     for folder in (BLOCKSTATES, BLOCK_MODELS, ITEM_MODELS, ITEM_DEFINITIONS, TEXTURES, LANG):
         folder.mkdir(parents=True, exist_ok=True)
 
-    lang = {"itemGroup.smooth_spheres.smooth_spheres": "Smooth Spheres"}
+    lang = {
+        "itemGroup.smooth_spheres.smooth_spheres": "Smooth Spheres",
+        "config.smooth_spheres.title": "Smooth Spheres",
+        "config.smooth_spheres.quality": "Sphere quality: %s",
+        "config.smooth_spheres.quality.balanced": "Balanced (128x64)",
+        "config.smooth_spheres.quality.high": "High (192x96)",
+        "config.smooth_spheres.quality.ultra": "Ultra (256x128)",
+        "config.smooth_spheres.apply": "Apply",
+        "config.smooth_spheres.reload_hint": "Changing quality reloads resources.",
+    }
 
     for block_id, info in SPHERES.items():
         write_json(BLOCKSTATES / f"{block_id}.json", {

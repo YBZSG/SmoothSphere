@@ -17,6 +17,9 @@
     ],
     "client": [
       "com.lzh.smoothspheres.SmoothSpheresClient"
+    ],
+    "modmenu": [
+      "com.lzh.smoothspheres.client.config.SmoothSpheresModMenu"
     ]
   },
   "depends": {
@@ -24,5 +27,8 @@
     "minecraft": "1.21.4",
     "java": ">=21",
     "fabric-api": ">=0.119.4+1.21.4"
+  },
+  "suggests": {
+    "modmenu": "*"
   }
 }

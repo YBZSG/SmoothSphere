@@ -1,6 +1,7 @@
 package com.lzh.smoothspheres.client.model;
 
 import com.lzh.smoothspheres.SmoothSpheresMod;
+import com.lzh.smoothspheres.client.config.SmoothSpheresConfig;
 import com.lzh.smoothspheres.registry.ModBlocks;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.block.Block;
@@ -17,13 +18,12 @@ import net.minecraft.util.math.random.Random;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SmoothSphereBakedModel implements BakedModel {
-    private static final int LATITUDE_SEGMENTS = 64;
-    private static final int LONGITUDE_SEGMENTS = 128;
     private static final float CENTER = 0.5F;
     private static final float RADIUS = 0.4375F;
-    private static final SphereQuad[] GEOMETRY = buildGeometry();
+    private static final Map<SmoothSpheresConfig.Quality, SphereQuad[]> GEOMETRY_CACHE = new ConcurrentHashMap<>();
     private static final Map<Identifier, SphereMaterial> MATERIALS = Map.of(
             SmoothSpheresMod.id("polished_metal_sphere"), SphereMaterial.POLISHED_METAL,
             SmoothSpheresMod.id("glowing_crystal_sphere"), SphereMaterial.GLOWING_CRYSTAL,
@@ -52,7 +52,7 @@ public class SmoothSphereBakedModel implements BakedModel {
     private SmoothSphereBakedModel(BakedModel original, SphereMaterial material) {
         this.original = original;
         this.particleSprite = original.getParticleSprite();
-        this.quads = bakeQuads(material, particleSprite);
+        this.quads = bakeQuads(material, particleSprite, SmoothSpheresConfig.get().quality());
     }
 
     public static void registerModelPlugin() {
@@ -100,23 +100,29 @@ public class SmoothSphereBakedModel implements BakedModel {
         return original.getTransformation();
     }
 
-    private static List<BakedQuad> bakeQuads(SphereMaterial material, Sprite sprite) {
-        return java.util.Arrays.stream(GEOMETRY)
+    private static List<BakedQuad> bakeQuads(SphereMaterial material, Sprite sprite, SmoothSpheresConfig.Quality quality) {
+        return java.util.Arrays.stream(geometry(quality))
                 .map(quad -> quad.bake(material, sprite))
                 .toList();
     }
 
-    private static SphereQuad[] buildGeometry() {
-        SphereQuad[] quads = new SphereQuad[LATITUDE_SEGMENTS * LONGITUDE_SEGMENTS];
+    private static SphereQuad[] geometry(SmoothSpheresConfig.Quality quality) {
+        return GEOMETRY_CACHE.computeIfAbsent(quality, SmoothSphereBakedModel::buildGeometry);
+    }
+
+    private static SphereQuad[] buildGeometry(SmoothSpheresConfig.Quality quality) {
+        int latitudeSegments = quality.latitudeSegments();
+        int longitudeSegments = quality.longitudeSegments();
+        SphereQuad[] quads = new SphereQuad[latitudeSegments * longitudeSegments];
         int index = 0;
 
-        for (int lat = 0; lat < LATITUDE_SEGMENTS; lat++) {
-            float theta0 = (float) Math.PI * lat / LATITUDE_SEGMENTS;
-            float theta1 = (float) Math.PI * (lat + 1) / LATITUDE_SEGMENTS;
+        for (int lat = 0; lat < latitudeSegments; lat++) {
+            float theta0 = (float) Math.PI * lat / latitudeSegments;
+            float theta1 = (float) Math.PI * (lat + 1) / latitudeSegments;
 
-            for (int lon = 0; lon < LONGITUDE_SEGMENTS; lon++) {
-                float phi0 = (float) (Math.PI * 2.0D * lon / LONGITUDE_SEGMENTS);
-                float phi1 = (float) (Math.PI * 2.0D * (lon + 1) / LONGITUDE_SEGMENTS);
+            for (int lon = 0; lon < longitudeSegments; lon++) {
+                float phi0 = (float) (Math.PI * 2.0D * lon / longitudeSegments);
+                float phi1 = (float) (Math.PI * 2.0D * (lon + 1) / longitudeSegments);
                 SphereVertex v00 = vertex(theta0, phi0);
                 SphereVertex v10 = vertex(theta1, phi0);
                 SphereVertex v11 = vertex(theta1, phi1);
