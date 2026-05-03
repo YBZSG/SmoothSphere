@@ -18,75 +18,102 @@ LANG = ASSET_ROOT / "lang"
 SPHERES = {
     "polished_metal_sphere": {
         "name": "Polished Metal Sphere",
-        "base": (168, 174, 178, 255),
-        "highlight": (238, 244, 248, 255),
-        "shadow": (58, 63, 67, 255),
+        "base": (152, 160, 166, 255),
+        "highlight": (232, 238, 242, 255),
+        "shadow": (62, 66, 70, 255),
         "normal": (128, 128, 255, 255),
-        "spec": (150, 185, 210, 255),
+        "spec": (165, 170, 176, 255),
         "emissive": (0, 0, 0, 255),
+        "specular": 0.45,
+        "normal_noise": 0.01,
     },
     "glowing_crystal_sphere": {
         "name": "Glowing Crystal Sphere",
-        "base": (96, 126, 255, 190),
-        "highlight": (234, 205, 255, 220),
-        "shadow": (34, 22, 102, 190),
+        "base": (112, 170, 245, 185),
+        "highlight": (230, 250, 255, 220),
+        "shadow": (42, 56, 138, 160),
         "normal": (128, 128, 255, 255),
-        "spec": (90, 175, 255, 255),
+        "spec": (74, 116, 170, 255),
         "emissive": (75, 90, 190, 255),
+        "specular": 0.24,
+        "normal_noise": 0.045,
     },
     "obsidian_black_sphere": {
         "name": "Obsidian Black Sphere",
-        "base": (18, 16, 24, 255),
-        "highlight": (116, 74, 160, 255),
-        "shadow": (3, 2, 7, 255),
+        "base": (14, 12, 24, 255),
+        "highlight": (82, 54, 128, 255),
+        "shadow": (2, 2, 7, 255),
         "normal": (128, 128, 255, 255),
-        "spec": (90, 75, 140, 255),
+        "spec": (42, 35, 68, 255),
         "emissive": (0, 0, 0, 255),
+        "specular": 0.18,
+        "normal_noise": 0.015,
     },
     "white_ceramic_sphere": {
         "name": "White Ceramic Sphere",
         "base": (230, 228, 220, 255),
-        "highlight": (255, 255, 252, 255),
-        "shadow": (150, 146, 136, 255),
+        "highlight": (246, 244, 235, 255),
+        "shadow": (166, 164, 156, 255),
         "normal": (128, 128, 255, 255),
-        "spec": (52, 52, 52, 255),
+        "spec": (18, 18, 18, 255),
         "emissive": (0, 0, 0, 255),
+        "specular": 0.035,
+        "normal_noise": 0.02,
     },
     "blue_glass_sphere": {
         "name": "Blue Glass Sphere",
-        "base": (56, 154, 238, 135),
-        "highlight": (196, 238, 255, 190),
-        "shadow": (14, 50, 112, 145),
+        "base": (62, 166, 245, 132),
+        "highlight": (212, 244, 255, 180),
+        "shadow": (22, 78, 156, 120),
         "normal": (128, 128, 255, 255),
-        "spec": (120, 210, 255, 255),
+        "spec": (118, 205, 245, 255),
         "emissive": (0, 0, 0, 255),
+        "specular": 0.5,
+        "normal_noise": 0.0,
     },
     "clear_glass_sphere": {
         "name": "Clear Glass Sphere",
         "base": (190, 238, 255, 92),
         "highlight": (255, 255, 255, 180),
-        "shadow": (112, 160, 178, 82),
+        "shadow": (128, 170, 184, 72),
         "normal": (128, 128, 255, 255),
-        "spec": (210, 245, 255, 255),
+        "spec": (170, 220, 240, 255),
         "emissive": (0, 0, 0, 255),
+        "specular": 0.52,
+        "normal_noise": 0.0,
+    },
+    "frosted_glass_sphere": {
+        "name": "Frosted Glass Sphere",
+        "base": (186, 228, 226, 164),
+        "highlight": (232, 255, 248, 178),
+        "shadow": (135, 178, 184, 150),
+        "normal": (128, 128, 255, 255),
+        "spec": (30, 42, 42, 255),
+        "emissive": (0, 0, 0, 255),
+        "specular": 0.075,
+        "normal_noise": 0.1,
     },
     "luminous_glass_sphere": {
         "name": "Luminous Glass Sphere",
-        "base": (150, 255, 220, 135),
-        "highlight": (255, 255, 245, 210),
-        "shadow": (72, 180, 150, 120),
+        "base": (150, 255, 220, 148),
+        "highlight": (255, 255, 245, 200),
+        "shadow": (72, 180, 150, 130),
         "normal": (128, 128, 255, 255),
-        "spec": (180, 255, 230, 255),
+        "spec": (70, 150, 130, 255),
         "emissive": (70, 205, 160, 255),
+        "specular": 0.2,
+        "normal_noise": 0.025,
     },
     "chrome_metal_sphere": {
         "name": "Chrome Metal Sphere",
-        "base": (172, 184, 190, 255),
+        "base": (156, 168, 176, 255),
         "highlight": (255, 255, 255, 255),
-        "shadow": (38, 42, 46, 255),
+        "shadow": (28, 32, 36, 255),
         "normal": (128, 128, 255, 255),
         "spec": (230, 240, 245, 255),
         "emissive": (0, 0, 0, 255),
+        "specular": 0.8,
+        "normal_noise": 0.0,
     },
 }
 
@@ -140,10 +167,16 @@ def shaded_texture(info: dict[str, tuple[int, int, int, int]], kind: str, size: 
         for x in range(size):
             u = x / (size - 1)
             phi = math.pi * 2.0 * u
-            normal = (math.cos(phi) * sin_theta, cos_theta, math.sin(phi) * sin_theta)
+            noise = math.sin(x * 12.9898 + y * 78.233) * math.sin(x * 4.173 + y * 19.19)
+            normal_noise = info.get("normal_noise", 0.0)
+            normal = normalize((
+                math.cos(phi) * sin_theta + noise * normal_noise,
+                cos_theta + math.sin(x * 0.31 + y * 0.17) * normal_noise * 0.65,
+                math.sin(phi) * sin_theta + math.cos(x * 0.21 - y * 0.37) * normal_noise,
+            ))
             diffuse = max(0.0, dot(normal, light_dir))
             fresnel = (1.0 - max(0.0, -normal[2])) ** 2.2
-            specular = max(0.0, dot(normal, half_dir)) ** 80
+            specular = (max(0.0, dot(normal, half_dir)) ** 80) * info.get("specular", 0.35)
 
             if kind == "normal":
                 pixels.append((
@@ -153,7 +186,7 @@ def shaded_texture(info: dict[str, tuple[int, int, int, int]], kind: str, size: 
                     255,
                 ))
             elif kind == "spec":
-                pixels.append(mix(info["spec"], info["highlight"], max(specular, fresnel * 0.35)))
+                pixels.append(mix(info["spec"], info["highlight"], max(specular, fresnel * info.get("specular", 0.35) * 0.24)))
             elif kind == "emissive":
                 glow = 0.35 + 0.45 * diffuse + 0.2 * fresnel
                 pixels.append(mix((0, 0, 0, 255), info["emissive"], glow))

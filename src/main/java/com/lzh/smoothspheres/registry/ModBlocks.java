@@ -68,6 +68,13 @@ public final class ModBlocks {
                     .sounds(BlockSoundGroup.GLASS)
     );
 
+    public static final Block FROSTED_GLASS_SPHERE = registerSphere(
+            "frosted_glass_sphere",
+            transparentSettings("frosted_glass_sphere")
+                    .strength(0.35F, 0.35F)
+                    .sounds(BlockSoundGroup.GLASS)
+    );
+
     public static final Block LUMINOUS_GLASS_SPHERE = registerSphere(
             "luminous_glass_sphere",
             transparentSettings("luminous_glass_sphere")

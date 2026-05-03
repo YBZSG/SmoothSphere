@@ -12,6 +12,7 @@ public class SmoothSpheresClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.GLOWING_CRYSTAL_SPHERE, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.BLUE_GLASS_SPHERE, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CLEAR_GLASS_SPHERE, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.FROSTED_GLASS_SPHERE, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.LUMINOUS_GLASS_SPHERE, RenderLayer.getTranslucent());
         SmoothSphereBakedModel.registerModelPlugin();
     }

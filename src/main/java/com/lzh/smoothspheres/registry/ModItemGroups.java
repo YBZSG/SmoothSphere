@@ -23,6 +23,7 @@ public final class ModItemGroups {
                     entries.add(ModBlocks.WHITE_CERAMIC_SPHERE);
                     entries.add(ModBlocks.BLUE_GLASS_SPHERE);
                     entries.add(ModBlocks.CLEAR_GLASS_SPHERE);
+                    entries.add(ModBlocks.FROSTED_GLASS_SPHERE);
                     entries.add(ModBlocks.LUMINOUS_GLASS_SPHERE);
                     entries.add(ModBlocks.CHROME_METAL_SPHERE);
                 })

@@ -31,6 +31,7 @@ public class SmoothSphereBakedModel implements BakedModel {
             SmoothSpheresMod.id("white_ceramic_sphere"), SphereMaterial.WHITE_CERAMIC,
             SmoothSpheresMod.id("blue_glass_sphere"), SphereMaterial.BLUE_GLASS,
             SmoothSpheresMod.id("clear_glass_sphere"), SphereMaterial.CLEAR_GLASS,
+            SmoothSpheresMod.id("frosted_glass_sphere"), SphereMaterial.FROSTED_GLASS,
             SmoothSpheresMod.id("luminous_glass_sphere"), SphereMaterial.LUMINOUS_GLASS,
             SmoothSpheresMod.id("chrome_metal_sphere"), SphereMaterial.CHROME_METAL
     );
@@ -41,6 +42,7 @@ public class SmoothSphereBakedModel implements BakedModel {
             ModBlocks.WHITE_CERAMIC_SPHERE,
             ModBlocks.BLUE_GLASS_SPHERE,
             ModBlocks.CLEAR_GLASS_SPHERE,
+            ModBlocks.FROSTED_GLASS_SPHERE,
             ModBlocks.LUMINOUS_GLASS_SPHERE,
             ModBlocks.CHROME_METAL_SPHERE
     );
@@ -176,25 +178,27 @@ public class SmoothSphereBakedModel implements BakedModel {
         data[offset + 5] = Float.floatToRawIntBits(sprite.getFrameV(0.5F));
     }
 
-    private static int packAbgr(int rgb) {
-        int red = (rgb >> 16) & 255;
-        int green = (rgb >> 8) & 255;
-        int blue = rgb & 255;
-        return 255 << 24 | blue << 16 | green << 8 | red;
+    private static int packAbgr(int argb) {
+        int alpha = (argb >> 24) & 255;
+        int red = (argb >> 16) & 255;
+        int green = (argb >> 8) & 255;
+        int blue = argb & 255;
+        return alpha << 24 | blue << 16 | green << 8 | red;
     }
 
     private record SphereVertex(float x, float y, float z, float normalX, float normalY, float normalZ) {
     }
 
     private enum SphereMaterial {
-        POLISHED_METAL(58, 63, 67, 168, 174, 178, 245, 250, 255, 0, 1.0F, 96.0F, 0.20F),
-        GLOWING_CRYSTAL(48, 88, 180, 130, 196, 255, 248, 255, 255, 14, 1.2F, 128.0F, 0.58F),
-        OBSIDIAN_BLACK(3, 2, 8, 18, 16, 28, 126, 74, 180, 0, 0.95F, 72.0F, 0.24F),
-        WHITE_CERAMIC(150, 146, 136, 232, 230, 220, 255, 255, 250, 0, 0.22F, 36.0F, 0.08F),
-        BLUE_GLASS(20, 74, 150, 58, 160, 245, 225, 248, 255, 0, 1.2F, 128.0F, 0.58F),
-        CLEAR_GLASS(112, 160, 178, 190, 238, 255, 255, 255, 255, 0, 1.2F, 128.0F, 0.58F),
-        LUMINOUS_GLASS(72, 180, 150, 150, 255, 220, 255, 255, 245, 15, 1.2F, 128.0F, 0.58F),
-        CHROME_METAL(38, 42, 46, 172, 184, 190, 255, 255, 255, 0, 1.0F, 96.0F, 0.20F);
+        POLISHED_METAL(62, 66, 70, 152, 160, 166, 232, 238, 242, 255, 0, 0.42F, 96.0F, 0.12F, 0.72F, 0.01F),
+        GLOWING_CRYSTAL(42, 56, 138, 112, 170, 245, 230, 250, 255, 185, 14, 0.24F, 54.0F, 0.36F, 0.58F, 0.04F),
+        OBSIDIAN_BLACK(2, 2, 7, 14, 12, 24, 82, 54, 128, 255, 0, 0.18F, 76.0F, 0.10F, 0.62F, 0.015F),
+        WHITE_CERAMIC(166, 164, 156, 232, 230, 220, 246, 244, 235, 255, 0, 0.035F, 22.0F, 0.025F, 0.78F, 0.018F),
+        BLUE_GLASS(22, 78, 156, 62, 166, 245, 212, 244, 255, 132, 0, 0.48F, 118.0F, 0.44F, 0.48F, 0.0F),
+        CLEAR_GLASS(128, 170, 184, 198, 240, 255, 255, 255, 255, 92, 0, 0.50F, 124.0F, 0.36F, 0.42F, 0.0F),
+        FROSTED_GLASS(135, 178, 184, 186, 228, 226, 232, 255, 248, 164, 0, 0.075F, 28.0F, 0.20F, 0.55F, 0.09F),
+        LUMINOUS_GLASS(72, 180, 150, 150, 255, 220, 255, 255, 245, 148, 15, 0.20F, 42.0F, 0.34F, 0.48F, 0.025F),
+        CHROME_METAL(28, 32, 36, 156, 168, 176, 255, 255, 255, 255, 0, 0.80F, 142.0F, 0.18F, 0.62F, 0.0F);
 
         private final int shadowRed;
         private final int shadowGreen;
@@ -205,10 +209,13 @@ public class SmoothSphereBakedModel implements BakedModel {
         private final int highlightRed;
         private final int highlightGreen;
         private final int highlightBlue;
+        private final int alpha;
         private final int lightEmission;
         private final float specularStrength;
         private final float specularPower;
         private final float rimStrength;
+        private final float diffuseStrength;
+        private final float surfaceNoise;
 
         SphereMaterial(
                 int shadowRed,
@@ -220,10 +227,13 @@ public class SmoothSphereBakedModel implements BakedModel {
                 int highlightRed,
                 int highlightGreen,
                 int highlightBlue,
+                int alpha,
                 int lightEmission,
                 float specularStrength,
                 float specularPower,
-                float rimStrength
+                float rimStrength,
+                float diffuseStrength,
+                float surfaceNoise
         ) {
             this.shadowRed = shadowRed;
             this.shadowGreen = shadowGreen;
@@ -234,17 +244,20 @@ public class SmoothSphereBakedModel implements BakedModel {
             this.highlightRed = highlightRed;
             this.highlightGreen = highlightGreen;
             this.highlightBlue = highlightBlue;
+            this.alpha = alpha;
             this.lightEmission = lightEmission;
             this.specularStrength = specularStrength;
             this.specularPower = specularPower;
             this.rimStrength = rimStrength;
+            this.diffuseStrength = diffuseStrength;
+            this.surfaceNoise = surfaceNoise;
         }
 
         private int color(SphereVertex vertex) {
             int red = shade(shadowRed, baseRed, highlightRed, vertex);
             int green = shade(shadowGreen, baseGreen, highlightGreen, vertex);
             int blue = shade(shadowBlue, baseBlue, highlightBlue, vertex);
-            return red << 16 | green << 8 | blue;
+            return alpha << 24 | red << 16 | green << 8 | blue;
         }
 
         private int shade(int shadow, int base, int highlight, SphereVertex vertex) {
@@ -253,9 +266,10 @@ public class SmoothSphereBakedModel implements BakedModel {
             float rim = (float) Math.pow(1.0F - facing, 2.4F) * rimStrength;
             float specAngle = Math.max(0.0F, vertex.normalX * -0.26F + vertex.normalY * 0.42F + vertex.normalZ * -0.87F);
             float specular = (float) Math.pow(specAngle, specularPower) * specularStrength;
-            float baseMix = clamp(0.30F + diffuse * 0.62F + rim * 0.18F);
+            float noise = ((float) Math.sin(vertex.normalX * 43.0F + vertex.normalY * 61.0F + vertex.normalZ * 29.0F) * 0.5F + 0.5F) * surfaceNoise;
+            float baseMix = clamp(0.34F + diffuse * diffuseStrength + rim * 0.12F + noise);
             float value = mix(shadow, base, baseMix);
-            return Math.round(mix(value, highlight, clamp(specular + rim)));
+            return Math.round(mix(value, highlight, clamp(specular + rim * 0.72F)));
         }
     }
 
