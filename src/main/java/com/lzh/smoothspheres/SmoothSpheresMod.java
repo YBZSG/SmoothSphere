@@ -1,7 +1,6 @@
 package com.lzh.smoothspheres;
 
 import com.lzh.smoothspheres.registry.ModBlocks;
-import com.lzh.smoothspheres.registry.ModBlockEntities;
 import com.lzh.smoothspheres.registry.ModItemGroups;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
@@ -12,7 +11,6 @@ public class SmoothSpheresMod implements ModInitializer {
     @Override
     public void onInitialize() {
         ModBlocks.initialize();
-        ModBlockEntities.initialize();
         ModItemGroups.initialize();
     }
 
