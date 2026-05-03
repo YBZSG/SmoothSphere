@@ -79,7 +79,7 @@ public class SmoothSphereBakedModel implements BakedModel {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return true;
+        return false;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class SmoothSphereBakedModel implements BakedModel {
 
     @Override
     public boolean isSideLit() {
-        return true;
+        return false;
     }
 
     @Override
@@ -147,7 +147,9 @@ public class SmoothSphereBakedModel implements BakedModel {
                 CENTER + normalZ * RADIUS,
                 normalX,
                 normalY,
-                normalZ
+                normalZ,
+                (phi / ((float) Math.PI * 2.0F)) * 16.0F,
+                (theta / (float) Math.PI) * 16.0F
         );
     }
 
@@ -163,7 +165,7 @@ public class SmoothSphereBakedModel implements BakedModel {
             packVertex(vertexData, 1, v10, material, sprite);
             packVertex(vertexData, 2, v11, material, sprite);
             packVertex(vertexData, 3, v01, material, sprite);
-            return new BakedQuad(vertexData, -1, face, sprite, true, material.lightEmission);
+            return new BakedQuad(vertexData, -1, face, sprite, false, material.lightEmission);
         }
     }
 
@@ -174,8 +176,8 @@ public class SmoothSphereBakedModel implements BakedModel {
         data[offset + 1] = Float.floatToRawIntBits(vertex.y);
         data[offset + 2] = Float.floatToRawIntBits(vertex.z);
         data[offset + 3] = packAbgr(color);
-        data[offset + 4] = Float.floatToRawIntBits(sprite.getFrameU(0.5F));
-        data[offset + 5] = Float.floatToRawIntBits(sprite.getFrameV(0.5F));
+        data[offset + 4] = Float.floatToRawIntBits(sprite.getFrameU(vertex.u));
+        data[offset + 5] = Float.floatToRawIntBits(sprite.getFrameV(vertex.v));
     }
 
     private static int packAbgr(int argb) {
@@ -186,7 +188,7 @@ public class SmoothSphereBakedModel implements BakedModel {
         return alpha << 24 | blue << 16 | green << 8 | red;
     }
 
-    private record SphereVertex(float x, float y, float z, float normalX, float normalY, float normalZ) {
+    private record SphereVertex(float x, float y, float z, float normalX, float normalY, float normalZ, float u, float v) {
     }
 
     private enum SphereMaterial {
