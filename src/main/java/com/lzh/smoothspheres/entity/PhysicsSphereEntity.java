@@ -12,6 +12,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -158,28 +159,8 @@ public class PhysicsSphereEntity extends Entity {
 
     @Override
     public boolean damage(ServerWorld world, DamageSource source, float amount) {
-        Entity attacker = source.getAttacker();
-        Entity directSource = source.getSource();
-        Entity pusher = attacker != null ? attacker : directSource;
-        Vec3d impulse;
-
-        if (pusher != null) {
-            impulse = getPos().subtract(pusher.getPos());
-            if (impulse.horizontalLengthSquared() < 1.0E-5D) {
-                impulse = pusher.getRotationVec(1.0F);
-            }
-        } else if (source.getPosition() != null) {
-            impulse = getPos().subtract(source.getPosition());
-        } else {
-            impulse = new Vec3d(random.nextDouble() - 0.5D, 0.0D, random.nextDouble() - 0.5D);
-        }
-
-        if (impulse.horizontalLengthSquared() < 1.0E-5D) {
-            impulse = new Vec3d(0.0D, 0.0D, 1.0D);
-        }
-
-        launch(impulse, HIT_PUSH + amount * 0.08D, 0.28D + Math.min(amount, 6.0F) * 0.025D);
-        animateDamage(0.0F);
+        Block.dropStack(world, getBlockPos(), new ItemStack(getBlockState().getBlock()));
+        discard();
         return true;
     }
 
