@@ -148,8 +148,8 @@ public class SmoothSphereBakedModel implements BakedModel {
                 normalX,
                 normalY,
                 normalZ,
-                (phi / ((float) Math.PI * 2.0F)) * 16.0F,
-                (theta / (float) Math.PI) * 16.0F
+                phi / ((float) Math.PI * 2.0F),
+                theta / (float) Math.PI
         );
     }
 
