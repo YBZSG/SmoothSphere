@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import math
 import struct
 import zlib
 from pathlib import Path
@@ -17,122 +16,83 @@ LANG = ASSET_ROOT / "lang"
 
 SPHERES = {
     "polished_metal_sphere": {
-        "name": "Polished Metal Sphere",
+        "name": "Polished Steel Sphere",
+        "zh": "\u629b\u5149\u94a2\u7403",
         "base": (152, 160, 166, 255),
-        "highlight": (232, 238, 242, 255),
-        "shadow": (62, 66, 70, 255),
         "normal": (128, 128, 255, 255),
         "spec": (165, 170, 176, 255),
         "emissive": (0, 0, 0, 255),
-        "specular": 0.45,
-        "normal_noise": 0.01,
     },
     "glowing_crystal_sphere": {
-        "name": "Glowing Crystal Sphere",
+        "name": "Luminous Crystal Sphere",
+        "zh": "\u8f89\u5149\u6c34\u6676\u7403",
         "base": (112, 170, 245, 90),
-        "highlight": (230, 250, 255, 220),
-        "shadow": (42, 56, 138, 160),
         "normal": (128, 128, 255, 255),
         "spec": (24, 38, 54, 255),
         "emissive": (75, 90, 190, 255),
-        "specular": 0.24,
-        "normal_noise": 0.045,
     },
     "obsidian_black_sphere": {
-        "name": "Obsidian Black Sphere",
+        "name": "Glossy Obsidian Sphere",
+        "zh": "\u4eae\u9762\u9ed1\u66dc\u77f3\u7403",
         "base": (14, 12, 24, 255),
-        "highlight": (82, 54, 128, 255),
-        "shadow": (2, 2, 7, 255),
         "normal": (128, 128, 255, 255),
         "spec": (42, 35, 68, 255),
         "emissive": (0, 0, 0, 255),
-        "specular": 0.18,
-        "normal_noise": 0.015,
     },
     "white_ceramic_sphere": {
-        "name": "White Ceramic Sphere",
+        "name": "Matte Ceramic Sphere",
+        "zh": "\u54d1\u5149\u9676\u74f7\u7403",
         "base": (230, 228, 220, 255),
-        "highlight": (246, 244, 235, 255),
-        "shadow": (166, 164, 156, 255),
         "normal": (128, 128, 255, 255),
         "spec": (18, 18, 18, 255),
         "emissive": (0, 0, 0, 255),
-        "specular": 0.035,
-        "normal_noise": 0.02,
     },
     "blue_glass_sphere": {
-        "name": "Blue Glass Sphere",
+        "name": "Azure Glass Sphere",
+        "zh": "\u6e5b\u84dd\u73bb\u7483\u7403",
         "base": (62, 166, 245, 44),
-        "highlight": (212, 244, 255, 180),
-        "shadow": (22, 78, 156, 120),
         "normal": (128, 128, 255, 255),
         "spec": (24, 48, 64, 255),
         "emissive": (0, 0, 0, 255),
-        "specular": 0.5,
-        "normal_noise": 0.0,
     },
     "clear_glass_sphere": {
         "name": "Clear Glass Sphere",
+        "zh": "\u900f\u660e\u73bb\u7483\u7403",
         "base": (190, 238, 255, 26),
-        "highlight": (255, 255, 255, 180),
-        "shadow": (128, 170, 184, 72),
         "normal": (128, 128, 255, 255),
         "spec": (18, 34, 42, 255),
         "emissive": (0, 0, 0, 255),
-        "specular": 0.52,
-        "normal_noise": 0.0,
     },
     "frosted_glass_sphere": {
         "name": "Frosted Glass Sphere",
+        "zh": "\u78e8\u7802\u73bb\u7483\u7403",
         "base": (186, 228, 226, 72),
-        "highlight": (232, 255, 248, 178),
-        "shadow": (135, 178, 184, 150),
         "normal": (128, 128, 255, 255),
         "spec": (12, 18, 18, 255),
         "emissive": (0, 0, 0, 255),
-        "specular": 0.075,
-        "normal_noise": 0.1,
     },
     "luminous_glass_sphere": {
-        "name": "Luminous Glass Sphere",
+        "name": "Glowglass Sphere",
+        "zh": "\u8367\u5149\u73bb\u7483\u7403",
         "base": (150, 255, 220, 58),
-        "highlight": (255, 255, 245, 200),
-        "shadow": (72, 180, 150, 130),
         "normal": (128, 128, 255, 255),
         "spec": (18, 42, 36, 255),
         "emissive": (70, 205, 160, 255),
-        "specular": 0.2,
-        "normal_noise": 0.025,
     },
     "chrome_metal_sphere": {
-        "name": "Chrome Metal Sphere",
+        "name": "Mirror Chrome Sphere",
+        "zh": "\u955c\u9762\u94ec\u7403",
         "base": (156, 168, 176, 255),
-        "highlight": (255, 255, 255, 255),
-        "shadow": (28, 32, 36, 255),
         "normal": (128, 128, 255, 255),
         "spec": (230, 240, 245, 255),
         "emissive": (0, 0, 0, 255),
-        "specular": 0.8,
-        "normal_noise": 0.0,
     },
-}
-
-ZH_NAMES = {
-    "polished_metal_sphere": "抛光金属球",
-    "glowing_crystal_sphere": "发光水晶球",
-    "obsidian_black_sphere": "黑曜石黑球",
-    "white_ceramic_sphere": "白色陶瓷球",
-    "blue_glass_sphere": "蓝色玻璃球",
-    "clear_glass_sphere": "透明玻璃球",
-    "frosted_glass_sphere": "磨砂玻璃球",
-    "luminous_glass_sphere": "发光玻璃球",
-    "chrome_metal_sphere": "铬金属球",
 }
 
 
 def write_json(path: Path, data: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def png_bytes(width: int, height: int, pixels: list[tuple[int, int, int, int]]) -> bytes:
@@ -152,29 +112,8 @@ def png_bytes(width: int, height: int, pixels: list[tuple[int, int, int, int]]) 
     ) + chunk(b"IEND", b"")
 
 
-def mix(a: tuple[int, int, int, int], b: tuple[int, int, int, int], t: float) -> tuple[int, int, int, int]:
-    t = max(0.0, min(1.0, t))
-    return tuple(round(a[i] + (b[i] - a[i]) * t) for i in range(4))
-
-
-def normalize(vector: tuple[float, float, float]) -> tuple[float, float, float]:
-    length = math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2])
-    return (vector[0] / length, vector[1] / length, vector[2] / length)
-
-
-def dot(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
-    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
-
-
 def material_texture(info: dict[str, tuple[int, int, int, int]], kind: str, size: int = 16) -> bytes:
-    if kind == "normal":
-        color = info["normal"]
-    elif kind == "spec":
-        color = info["spec"]
-    elif kind == "emissive":
-        color = info["emissive"]
-    else:
-        color = info["base"]
+    color = info[kind if kind in info else "base"]
     return png_bytes(size, size, [color] * (size * size))
 
 
@@ -186,6 +125,21 @@ def sphere_model(texture_name: str) -> dict:
             "particle": f"smooth_spheres:block/{texture_name}",
         },
         "elements": [],
+    }
+
+
+def sphere_item_model(texture_name: str) -> dict:
+    return {
+        "parent": f"smooth_spheres:block/{texture_name}",
+        "display": {
+            "gui": {"rotation": [30, 225, 0], "translation": [0, 0, 0], "scale": [0.76, 0.76, 0.76]},
+            "ground": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": [0.34, 0.34, 0.34]},
+            "fixed": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [0.62, 0.62, 0.62]},
+            "thirdperson_righthand": {"rotation": [75, 45, 0], "translation": [0, 2.5, 1], "scale": [0.38, 0.38, 0.38]},
+            "thirdperson_lefthand": {"rotation": [75, 45, 0], "translation": [0, 2.5, 1], "scale": [0.38, 0.38, 0.38]},
+            "firstperson_righthand": {"rotation": [0, 45, 0], "translation": [1.2, 2.2, 0], "scale": [0.42, 0.42, 0.42]},
+            "firstperson_lefthand": {"rotation": [0, 225, 0], "translation": [1.2, 2.2, 0], "scale": [0.42, 0.42, 0.42]},
+        },
     }
 
 
@@ -207,40 +161,31 @@ def main() -> None:
         "config.smooth_spheres.reload_hint": "Changing quality reloads resources.",
     }
     zh_lang = {
-        "itemGroup.smooth_spheres.smooth_spheres": "光滑球体",
-        "config.smooth_spheres.title": "光滑球体",
-        "config.smooth_spheres.quality": "球体质量：%s",
-        "config.smooth_spheres.quality.balanced": "均衡（128x64）",
-        "config.smooth_spheres.quality.high": "高（192x96）",
-        "config.smooth_spheres.quality.ultra": "极高（256x128）",
-        "config.smooth_spheres.physics": "物理效果：%s",
-        "config.smooth_spheres.enabled": "开启",
-        "config.smooth_spheres.disabled": "关闭",
-        "config.smooth_spheres.apply": "应用",
-        "config.smooth_spheres.reload_hint": "修改球体质量会重新加载资源。",
+        "itemGroup.smooth_spheres.smooth_spheres": "\u5149\u6ed1\u7403\u4f53",
+        "config.smooth_spheres.title": "\u5149\u6ed1\u7403\u4f53",
+        "config.smooth_spheres.quality": "\u7403\u4f53\u8d28\u91cf\uff1a%s",
+        "config.smooth_spheres.quality.balanced": "\u5747\u8861\uff08128x64\uff09",
+        "config.smooth_spheres.quality.high": "\u9ad8\uff08192x96\uff09",
+        "config.smooth_spheres.quality.ultra": "\u6781\u9ad8\uff08256x128\uff09",
+        "config.smooth_spheres.physics": "\u7269\u7406\u6548\u679c\uff1a%s",
+        "config.smooth_spheres.enabled": "\u5f00\u542f",
+        "config.smooth_spheres.disabled": "\u5173\u95ed",
+        "config.smooth_spheres.apply": "\u5e94\u7528",
+        "config.smooth_spheres.reload_hint": "\u4fee\u6539\u7403\u4f53\u8d28\u91cf\u4f1a\u91cd\u65b0\u52a0\u8f7d\u8d44\u6e90\u3002",
     }
 
     for block_id, info in SPHERES.items():
         write_json(BLOCKSTATES / f"{block_id}.json", {
-            "variants": {
-                "": {"model": f"smooth_spheres:block/{block_id}"}
-            }
+            "variants": {"": {"model": f"smooth_spheres:block/{block_id}"}}
         })
         write_json(BLOCK_MODELS / f"{block_id}.json", sphere_model(block_id))
-        write_json(ITEM_MODELS / f"{block_id}.json", {
-            "parent": "minecraft:item/generated",
-            "textures": {
-                "layer0": f"smooth_spheres:block/{block_id}"
-            }
-        })
+        write_json(ITEM_MODELS / f"{block_id}.json", sphere_item_model(block_id))
         write_json(ITEM_DEFINITIONS / f"{block_id}.json", {
-            "model": {
-                "type": "minecraft:model",
-                "model": f"smooth_spheres:item/{block_id}"
-            }
+            "model": {"type": "minecraft:model", "model": f"smooth_spheres:item/{block_id}"}
         })
+
         lang[f"block.smooth_spheres.{block_id}"] = info["name"]
-        zh_lang[f"block.smooth_spheres.{block_id}"] = ZH_NAMES[block_id]
+        zh_lang[f"block.smooth_spheres.{block_id}"] = info["zh"]
 
         (TEXTURES / f"{block_id}.png").write_bytes(material_texture(info, "base"))
         (TEXTURES / f"{block_id}_n.png").write_bytes(material_texture(info, "normal"))

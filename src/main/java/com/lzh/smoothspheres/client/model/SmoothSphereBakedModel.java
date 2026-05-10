@@ -60,12 +60,25 @@ public class SmoothSphereBakedModel implements BakedModel {
     public static void registerModelPlugin() {
         ModelLoadingPlugin.register(context -> context.modifyBlockModelAfterBake().register((model, modifierContext) -> {
             ModelIdentifier modelId = modifierContext.id();
-            SphereMaterial material = MATERIALS.get(modelId.id());
-            if (material == null || !"".equals(modelId.variant())) {
+            SphereMaterial material = materialFor(modelId.id());
+            if (material == null) {
                 return model;
             }
             return new SmoothSphereBakedModel(model, material);
         }));
+    }
+
+    private static SphereMaterial materialFor(Identifier id) {
+        SphereMaterial material = MATERIALS.get(id);
+        if (material != null) {
+            return material;
+        }
+
+        String path = id.getPath();
+        if (path.startsWith("item/") || path.startsWith("block/")) {
+            return MATERIALS.get(Identifier.of(id.getNamespace(), path.substring(path.indexOf('/') + 1)));
+        }
+        return null;
     }
 
     public static boolean isSphereBlock(Block block) {

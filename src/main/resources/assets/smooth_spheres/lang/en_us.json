@@ -10,13 +10,13 @@
   "config.smooth_spheres.disabled": "Off",
   "config.smooth_spheres.apply": "Apply",
   "config.smooth_spheres.reload_hint": "Changing quality reloads resources.",
-  "block.smooth_spheres.polished_metal_sphere": "Polished Metal Sphere",
-  "block.smooth_spheres.glowing_crystal_sphere": "Glowing Crystal Sphere",
-  "block.smooth_spheres.obsidian_black_sphere": "Obsidian Black Sphere",
-  "block.smooth_spheres.white_ceramic_sphere": "White Ceramic Sphere",
-  "block.smooth_spheres.blue_glass_sphere": "Blue Glass Sphere",
+  "block.smooth_spheres.polished_metal_sphere": "Polished Steel Sphere",
+  "block.smooth_spheres.glowing_crystal_sphere": "Luminous Crystal Sphere",
+  "block.smooth_spheres.obsidian_black_sphere": "Glossy Obsidian Sphere",
+  "block.smooth_spheres.white_ceramic_sphere": "Matte Ceramic Sphere",
+  "block.smooth_spheres.blue_glass_sphere": "Azure Glass Sphere",
   "block.smooth_spheres.clear_glass_sphere": "Clear Glass Sphere",
   "block.smooth_spheres.frosted_glass_sphere": "Frosted Glass Sphere",
-  "block.smooth_spheres.luminous_glass_sphere": "Luminous Glass Sphere",
-  "block.smooth_spheres.chrome_metal_sphere": "Chrome Metal Sphere"
+  "block.smooth_spheres.luminous_glass_sphere": "Glowglass Sphere",
+  "block.smooth_spheres.chrome_metal_sphere": "Mirror Chrome Sphere"
 }
